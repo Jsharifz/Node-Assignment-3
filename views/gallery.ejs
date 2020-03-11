@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+
+
+<main>
+    <section id="gallery-card">
+        <% for (pictures of gallery) { <!-- this passes the objects in order from module gallery -->
+      %>
+
+        <div class="card">
+            <a href="./gallery/<%= pictures.id %>">
+                <figure>
+                    <img src=" images/sm/<%= pictures.fileName %>" alt="<%= pictures.title %>" id="<%= pictures.id %>">
+                    <figcaption><%= pictures.title %>, by: <em><%= pictures.attribution.credit %></em></figcaption>
+                </figure>
+            </a>
+        </div>
+
+        <%
+    } %>
+        <!-- script closure -->
+    </section>
+</main>
+
+
+<%- include('partials/footer') %>
