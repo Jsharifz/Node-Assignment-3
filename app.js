@@ -4,7 +4,7 @@ const express = require('express');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
-var slugify = require('slugify')
+var slugify = require('slugify');
 
 /*************/
 /* App Setup */
@@ -13,23 +13,6 @@ var slugify = require('slugify')
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
-
-
-
-/**************************/
-/* Setup Early Middleware */
-/**************************/
-
-// Process POST form data from headers
-app.use(express.urlencoded({ extended: false }));
-
-// Set up global variables for navigation
-app.use(function (request, response, next) {
-  response.locals.currentIndex = '';
-  response.locals.currentGalleries = '';
-  next();
-})
-
 
 /*******************************/
 /* Mongoose/MongoDB Connection */
@@ -49,61 +32,53 @@ const uri = process.env.MONGODB_URL;
 
 // Connect to MongoDB Atlas
 // Notice that most of the code is inside a callback
-MongoClient.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true }, function (err, client) {
-  if (err) {
-    console.log('Error occurred while connecting to MongoDB Atlas...\n', err);
-  }
-  console.log('Connected...');
 
-  // Choose our database
-  const db = client.db("gallery");
+MongoClient.connect(uri, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+},
+  function (err, client) {
 
-  // Target our collection
-  const imgCol = db.collection('images');
+    if (err) {
+      console.log('Error occurred while connecting to MongoDB Atlas...\n', err);
+    }
+    console.log('Connected...');
 
-  // Drop the current collection, if there is any. The purpose of this script is to reset a test database to its default state.
-  imgCol.deleteMany();
-  console.log('Dropped');
+    // Choose our database
+    const db = client.db("gallery");
 
-  // Create a fresh collection using the custom module data
-  imgCol.insertMany(images).then(function (cursor) {
-    console.log(cursor.insertedCount);
-    client.close()
-  }).catch(function (err) {
-    console.log(err);
+    // Target our collection
+    const imgCol = db.collection('images');
+
+    // Drop the current collection, if there is any. The purpose of this script is to reset a test database to its default state.
+    imgCol.deleteMany();
+    console.log('Dropped');
+
+    // Create a fresh collection using the custom module data
+
+    imgCol.insertMany(images).then(function (cursor) {
+      console.log(cursor.insertedCount);
+      client.close()
+    }).catch(function (err) {
+      console.log(err);
+    });
   });
-});
-
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const dbURI = process.env.MONGODB_URL;
-mongoose.connect(dbURI, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true
-});
+const ImGallery = require("./models/Galleries")
 
-var db = mongoose.connection;
-db.on('error', function (error) {
-  console.log(`Connection Error: ${error.message}`)
-});
-db.once('open', function () {
-  console.log('Connected to DB...');
-});
+ImGallery.find(function (err, result) {
+  console.log(result)
+})
 
-
-/**********************/
-/* /definitions Route */
-/**********************/
-
-app.use('/definitions', require('./routes/images'));
-
+console.log(ImGallery.find(function (err, result) {
+}))
 
 // Import of our custom modules
 const pageInfo = require('./pageInfo');
 const gallery = require("./gallery");
-app.locals.gallery = gallery; // to amke gallery accessible for views
-
+app.locals.gallery = gallery; // to make gallery accessible for views
 
 app.get('/gallery/:id', function (req, res) { // start of gallery endpoint script
 
