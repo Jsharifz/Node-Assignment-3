@@ -14,6 +14,29 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
+
+
+/**************************/
+/* Setup Early Middleware */
+/**************************/
+
+// Process POST form data from headers
+app.use(express.urlencoded({ extended: false }));
+
+// Set up global variables for navigation
+app.use(function (request, response, next) {
+  response.locals.currentIndex = '';
+  response.locals.currentGalleries = '';
+  next();
+})
+
+
+/*******************************/
+/* Mongoose/MongoDB Connection */
+/*******************************/
+
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Setup Mongo Client
 const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
@@ -51,7 +74,30 @@ MongoClient.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true }, fu
   });
 });
 
-console.log(Galleries)
+
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const dbURI = process.env.MONGODB_URL;
+mongoose.connect(dbURI, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
+
+var db = mongoose.connection;
+db.on('error', function (error) {
+  console.log(`Connection Error: ${error.message}`)
+});
+db.once('open', function () {
+  console.log('Connected to DB...');
+});
+
+
+/**********************/
+/* /definitions Route */
+/**********************/
+
+app.use('/definitions', require('./routes/images'));
+
 
 // Import of our custom modules
 const pageInfo = require('./pageInfo');
