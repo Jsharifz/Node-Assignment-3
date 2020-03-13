@@ -72,8 +72,6 @@ ImGallery.find(function (err, result) {
   console.log(result)
 })
 
-console.log(ImGallery.find(function (err, result) {
-}))
 
 // Import of our custom modules
 const pageInfo = require('./pageInfo');

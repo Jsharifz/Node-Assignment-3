@@ -10,7 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "mongodb": "^3.5.4"
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.4",
+    "mongoose": "^5.9.4",
+    "path": "^0.12.7",
+    "slugify": "^1.4.0"
   }
 }
