@@ -18,7 +18,6 @@ const imageSchema = new mongoose.Schema(
             url: String
         }
     }
-
 );
 
 // Compile and export our model using the above Schema.
