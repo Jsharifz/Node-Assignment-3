@@ -1,20 +1,43 @@
-<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
 
-<main>
-    <section id="gallery-card">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css" media="screen" />
+</head>
 
-        <p><%= gallery %></p>
-        <div class="card">
-            <a href="">
-                <figure>
-                    <img src="" alt="" id="">
-                    <figcaption>TITLE, by: <em>CREDIT</em></figcaption>
-                </figure>
-            </a>
-        </div>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/gallery">Gallery</a>
+    </nav>
 
+    <header>
+        <h1>Gallery</h1>
+    </header>
 
-    </section>
-</main>
+    <main>
+        <section id="gallery-card">
 
-<%- include('partials/footer') %>
+            <% for (pictures of gallery) { <!-- this passes the objects in order from module gallery -->
+            %>
+
+            <div class="card">
+                <a href="./gallery/<%= pictures.id %>">
+                    <figure>
+                        <img src=" images/sm/<%= pictures.fileName %>" alt="<%= pictures.title %>"
+                            id="<%= pictures.id %>">
+                        <figcaption><%= pictures.title %>, by: <em><%= pictures.attribution.credit %></em></figcaption>
+                    </figure>
+                </a>
+            </div>
+
+            <%
+    } %>
+            <!-- script closure -->
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>

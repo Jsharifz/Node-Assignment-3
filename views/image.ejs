@@ -1,20 +1,28 @@
-<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="en">
 
-<main>
-  <section id="gallery-card">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%- image.title %></title>
+  <link rel="stylesheet" type="text/css" href="/css/main.css" media="screen" />
+</head>
 
-    <p><%= image %></p>
-    <div class="card">
-      <a href="">
-        <figure>
-          <img src="" alt="" id="">
-          <figcaption>TITLE, by: <em>CREDIT</em></figcaption>
-        </figure>
-      </a>
-    </div>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/gallery">Gallery</a>
+  </nav>
 
+  <main>
+    <h1><%- image.title %></h1>
 
-  </section>
-</main>
+    <figure id="endpoint">
+      <img src="/images/lrg/<%- image.fileName %>" alt="${photoById.title}" id="${PId}">
+      <figcaption><%- image.title %>, by: <em><a href="<%- image.attribution.url %>"
+            target="_blank"><%- image.attribution.credit %></a></em> (<%- image.attribution.source %>)</figcaption>
+    </figure>
 
-<%- include('partials/footer') %>
+  </main>
+
+  <%- include('partials/footer') %>
